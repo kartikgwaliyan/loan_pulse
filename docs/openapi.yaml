@@ -1,0 +1,3500 @@
+openapi: 3.0.3
+info:
+  title: LoanPulse – Digital Lending & Loan Lifecycle Management API
+  version: 1.0.0
+  description: Complete REST API documentation for LoanPulse lending workflows, underwriting,
+    KYC, repayments, and risk management.
+paths:
+  /api/audit/:
+    get:
+      operationId: audit_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - audit
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAuditLogList'
+          description: ''
+  /api/auth/admin/users/:
+    get:
+      operationId: auth_admin_users_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAdminUserManageList'
+          description: ''
+    post:
+      operationId: auth_admin_users_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminUserManage'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminUserManage'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminUserManage'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminUserManage'
+          description: ''
+  /api/auth/admin/users/{id}/:
+    get:
+      operationId: auth_admin_users_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminUserManage'
+          description: ''
+    put:
+      operationId: auth_admin_users_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminUserManage'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminUserManage'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminUserManage'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminUserManage'
+          description: ''
+    patch:
+      operationId: auth_admin_users_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminUserManage'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminUserManage'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminUserManage'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminUserManage'
+          description: ''
+    delete:
+      operationId: auth_admin_users_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/auth/login/:
+    post:
+      operationId: auth_login_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomTokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomTokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomTokenObtainPair'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomTokenObtainPair'
+          description: ''
+  /api/auth/profile/:
+    get:
+      operationId: auth_profile_retrieve
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: auth_profile_update
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: auth_profile_partial_update
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/auth/register/:
+    post:
+      operationId: auth_register_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Register'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Register'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Register'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Register'
+          description: ''
+  /api/auth/token/refresh/:
+    post:
+      operationId: auth_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/collections/overdue-accounts/:
+    get:
+      operationId: collections_overdue_accounts_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - collections
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOverdueAccountList'
+          description: ''
+  /api/collections/overdue-accounts/{id}/:
+    get:
+      operationId: collections_overdue_accounts_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - collections
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OverdueAccount'
+          description: ''
+    put:
+      operationId: collections_overdue_accounts_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - collections
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OverdueAccount'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OverdueAccount'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OverdueAccount'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OverdueAccount'
+          description: ''
+    patch:
+      operationId: collections_overdue_accounts_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - collections
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOverdueAccount'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOverdueAccount'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOverdueAccount'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OverdueAccount'
+          description: ''
+  /api/collections/overdue-accounts/{id}/activity/:
+    post:
+      operationId: collections_overdue_accounts_activity_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - collections
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/customers/:
+    get:
+      operationId: customers_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - customers
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCustomerProfileList'
+          description: ''
+  /api/customers/{customer_id}/:
+    get:
+      operationId: customers_retrieve
+      parameters:
+      - in: path
+        name: customer_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - customers
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerProfile'
+          description: ''
+    put:
+      operationId: customers_update
+      parameters:
+      - in: path
+        name: customer_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - customers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerProfile'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomerProfile'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomerProfile'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerProfile'
+          description: ''
+    patch:
+      operationId: customers_partial_update
+      parameters:
+      - in: path
+        name: customer_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - customers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomerProfile'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomerProfile'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomerProfile'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerProfile'
+          description: ''
+  /api/customers/me/:
+    get:
+      operationId: customers_me_retrieve
+      tags:
+      - customers
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: customers_me_update
+      tags:
+      - customers
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/kyc/documents/:
+    get:
+      operationId: kyc_documents_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - kyc
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedKYCDocumentList'
+          description: ''
+    post:
+      operationId: kyc_documents_create
+      tags:
+      - kyc
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KYCDocument'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/KYCDocument'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/KYCDocument'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KYCDocument'
+          description: ''
+  /api/kyc/documents/{id}/verify/:
+    post:
+      operationId: kyc_documents_verify_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - kyc
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/loans/:
+    get:
+      operationId: loans_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - loans
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedLoanList'
+          description: ''
+  /api/loans/{loan_id}/:
+    get:
+      operationId: loans_retrieve
+      parameters:
+      - in: path
+        name: loan_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - loans
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Loan'
+          description: ''
+  /api/loans/applications/:
+    get:
+      operationId: loans_applications_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - loans
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedLoanApplicationList'
+          description: ''
+    post:
+      operationId: loans_applications_create
+      tags:
+      - loans
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanApplicationCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LoanApplicationCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LoanApplicationCreate'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanApplicationCreate'
+          description: ''
+  /api/loans/applications/{application_id}/:
+    get:
+      operationId: loans_applications_retrieve
+      parameters:
+      - in: path
+        name: application_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - loans
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanApplication'
+          description: ''
+  /api/loans/applications/{application_id}/approve/:
+    post:
+      operationId: loans_applications_approve_create
+      description: Manager / Credit Authority Approval with Approval Matrix validation!
+      parameters:
+      - in: path
+        name: application_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - loans
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/loans/applications/{application_id}/disburse/:
+    post:
+      operationId: loans_applications_disburse_create
+      description: |-
+        Executes loan disbursement:
+        1. Validates bank credentials
+        2. Changes application status -> DISBURSED
+        3. Creates Loan record with unique LN-XXXX id
+        4. Records Disbursement transaction with UTR
+        5. Triggers automatic monthly EMI schedule generation!
+      parameters:
+      - in: path
+        name: application_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - loans
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/loans/applications/{application_id}/review/:
+    post:
+      operationId: loans_applications_review_create
+      description: |-
+        Loan Officer review actions:
+        - VERIFY_DOCS: Moves from DOC_VERIFICATION -> UNDER_REVIEW -> RISK_ASSESSMENT
+        - REQUEST_INFO: Adds remarks and requests applicant to update
+        - REJECT: Rejects application with reason
+      parameters:
+      - in: path
+        name: application_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - loans
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/loans/applications/check-eligibility/:
+    post:
+      operationId: loans_applications_check_eligibility_create
+      tags:
+      - loans
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/loans/config/approval-matrix/:
+    get:
+      operationId: loans_config_approval_matrix_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - loans
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedApprovalMatrixConfigList'
+          description: ''
+    post:
+      operationId: loans_config_approval_matrix_create
+      tags:
+      - loans
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApprovalMatrixConfig'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ApprovalMatrixConfig'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ApprovalMatrixConfig'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalMatrixConfig'
+          description: ''
+  /api/loans/products/:
+    get:
+      operationId: loans_products_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - loans
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedLoanProductList'
+          description: ''
+    post:
+      operationId: loans_products_create
+      tags:
+      - loans
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanProduct'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LoanProduct'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LoanProduct'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanProduct'
+          description: ''
+  /api/loans/products/{id}/:
+    get:
+      operationId: loans_products_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - loans
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanProduct'
+          description: ''
+    put:
+      operationId: loans_products_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - loans
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanProduct'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LoanProduct'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LoanProduct'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanProduct'
+          description: ''
+    patch:
+      operationId: loans_products_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - loans
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedLoanProduct'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedLoanProduct'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedLoanProduct'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanProduct'
+          description: ''
+    delete:
+      operationId: loans_products_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - loans
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/notifications/:
+    get:
+      operationId: notifications_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - notifications
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNotificationList'
+          description: ''
+  /api/notifications/{id}/read/:
+    post:
+      operationId: notifications_read_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - notifications
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/notifications/read-all/:
+    post:
+      operationId: notifications_read_all_create
+      tags:
+      - notifications
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/payments/emi-schedules/:
+    get:
+      operationId: payments_emi_schedules_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - payments
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEMIScheduleList'
+          description: ''
+  /api/payments/pay/:
+    post:
+      operationId: payments_pay_create
+      tags:
+      - payments
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/payments/transactions/:
+    get:
+      operationId: payments_transactions_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - payments
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPaymentTransactionList'
+          description: ''
+  /api/reports/dashboard/customer/:
+    get:
+      operationId: reports_dashboard_customer_retrieve
+      tags:
+      - reports
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/reports/dashboard/executive/:
+    get:
+      operationId: reports_dashboard_executive_retrieve
+      tags:
+      - reports
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/reports/export/portfolio/:
+    get:
+      operationId: reports_export_portfolio_retrieve
+      tags:
+      - reports
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/risk/:
+    get:
+      operationId: risk_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - risk
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRiskAssessmentList'
+          description: ''
+  /api/risk/{id}/:
+    get:
+      operationId: risk_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - risk
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RiskAssessment'
+          description: ''
+  /api/risk/evaluate/{application_id}/:
+    post:
+      operationId: risk_evaluate_create
+      description: Triggers the ML credit risk engine on a loan application.
+      parameters:
+      - in: path
+        name: application_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - risk
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/support/tickets/:
+    get:
+      operationId: support_tickets_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - support
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSupportTicketList'
+          description: ''
+    post:
+      operationId: support_tickets_create
+      tags:
+      - support
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupportTicket'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SupportTicket'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SupportTicket'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportTicket'
+          description: ''
+  /api/support/tickets/{ticket_id}/:
+    get:
+      operationId: support_tickets_retrieve
+      parameters:
+      - in: path
+        name: ticket_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - support
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportTicket'
+          description: ''
+    put:
+      operationId: support_tickets_update
+      parameters:
+      - in: path
+        name: ticket_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - support
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupportTicket'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SupportTicket'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SupportTicket'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportTicket'
+          description: ''
+    patch:
+      operationId: support_tickets_partial_update
+      parameters:
+      - in: path
+        name: ticket_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - support
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSupportTicket'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSupportTicket'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSupportTicket'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportTicket'
+          description: ''
+  /api/support/tickets/{ticket_id}/reply/:
+    post:
+      operationId: support_tickets_reply_create
+      parameters:
+      - in: path
+        name: ticket_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - support
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+components:
+  schemas:
+    AdminUserManage:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          title: Email address
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        phone:
+          type: string
+          nullable: true
+          maxLength: 20
+        branch:
+          type: string
+          maxLength: 100
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        is_verified:
+          type: boolean
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - id
+      - username
+    ApprovalMatrixConfig:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        min_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        max_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        required_role:
+          type: string
+          maxLength: 30
+        is_active:
+          type: boolean
+      required:
+      - id
+      - max_amount
+      - min_amount
+      - name
+    AuditLog:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: integer
+          nullable: true
+        username:
+          type: string
+          readOnly: true
+        user_role:
+          type: string
+          readOnly: true
+        action:
+          type: string
+          maxLength: 100
+        target_type:
+          type: string
+          nullable: true
+          maxLength: 50
+        target_id:
+          type: string
+          nullable: true
+          maxLength: 100
+        ip_address:
+          type: string
+          nullable: true
+          maxLength: 50
+        details: {}
+        timestamp:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - action
+      - id
+      - timestamp
+      - user_role
+      - username
+    CategoryEnum:
+      enum:
+      - EMI
+      - DISBURSEMENT
+      - KYC
+      - ACCOUNT
+      - GENERAL
+      type: string
+      description: |-
+        * `EMI` - EMI & Repayments
+        * `DISBURSEMENT` - Disbursement & Bank Transfer
+        * `KYC` - KYC & Document Verification
+        * `ACCOUNT` - Account & Profile
+        * `GENERAL` - General Inquiry
+    CollectionActivity:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        overdue_account:
+          type: integer
+        officer:
+          type: integer
+          readOnly: true
+        officer_name:
+          type: string
+          readOnly: true
+        contact_type:
+          $ref: '#/components/schemas/ContactTypeEnum'
+        customer_response:
+          type: string
+          nullable: true
+          maxLength: 255
+        notes:
+          type: string
+        followup_date:
+          type: string
+          format: date
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - notes
+      - officer
+      - officer_name
+      - overdue_account
+    ContactTypeEnum:
+      enum:
+      - CALL
+      - SMS
+      - EMAIL
+      - FIELD_VISIT
+      - LEGAL_NOTICE
+      type: string
+      description: |-
+        * `CALL` - Phone Call
+        * `SMS` - SMS Alert
+        * `EMAIL` - Formal Demand Email
+        * `FIELD_VISIT` - Field Investigation / Recovery Visit
+        * `LEGAL_NOTICE` - Legal Notice
+    CustomTokenObtainPair:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - password
+      - username
+    CustomerProfile:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        customer_id:
+          type: string
+          readOnly: true
+        user:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        full_name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          readOnly: true
+        phone:
+          type: string
+          readOnly: true
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          type: string
+          nullable: true
+          maxLength: 20
+        pan_number:
+          type: string
+          nullable: true
+          maxLength: 10
+        aadhaar_number:
+          type: string
+          nullable: true
+          maxLength: 12
+        marital_status:
+          type: string
+          nullable: true
+          maxLength: 20
+        address_line1:
+          type: string
+          nullable: true
+          maxLength: 255
+        address_line2:
+          type: string
+          nullable: true
+          maxLength: 255
+        city:
+          type: string
+          nullable: true
+          maxLength: 100
+        state:
+          type: string
+          nullable: true
+          maxLength: 100
+        pincode:
+          type: string
+          nullable: true
+          maxLength: 10
+        employment_type:
+          $ref: '#/components/schemas/EmploymentTypeEnum'
+        employer_name:
+          type: string
+          nullable: true
+          maxLength: 150
+        designation:
+          type: string
+          nullable: true
+          maxLength: 100
+        monthly_income:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        annual_income:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        work_experience_years:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        existing_loans_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        monthly_obligations:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        bank_name:
+          type: string
+          nullable: true
+          maxLength: 100
+        account_number:
+          type: string
+          nullable: true
+          maxLength: 30
+        ifsc_code:
+          type: string
+          nullable: true
+          maxLength: 20
+        credit_score:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          description: CIBIL / Credit Bureau Score (300 - 900)
+        onboarding_completed:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - customer_id
+      - email
+      - full_name
+      - id
+      - phone
+      - updated_at
+      - user
+    DocumentTypeEnum:
+      enum:
+      - PAN
+      - AADHAAR
+      - PASSPORT
+      - VOTER_ID
+      - SALARY_SLIP
+      - BANK_STATEMENT
+      - EMPLOYMENT_PROOF
+      - ADDRESS_PROOF
+      - OTHER
+      type: string
+      description: |-
+        * `PAN` - PAN Card
+        * `AADHAAR` - Aadhaar Card
+        * `PASSPORT` - Passport
+        * `VOTER_ID` - Voter ID
+        * `SALARY_SLIP` - Salary Slip (Last 3 Months)
+        * `BANK_STATEMENT` - Bank Statement (Last 6 Months)
+        * `EMPLOYMENT_PROOF` - Employment Offer / ID Card
+        * `ADDRESS_PROOF` - Utility Bill / Address Proof
+        * `OTHER` - Other Supporting Document
+    DpdBracketEnum:
+      enum:
+      - 30_PLUS
+      - 60_PLUS
+      - 90_PLUS
+      - NPA_CRITICAL
+      type: string
+      description: |-
+        * `30_PLUS` - 1 - 30 Days (SMA-0)
+        * `60_PLUS` - 31 - 60 Days (SMA-1)
+        * `90_PLUS` - 61 - 90 Days (SMA-2)
+        * `NPA_CRITICAL` - 90+ Days (Sub-Standard / NPA)
+    EMISchedule:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        loan:
+          type: integer
+        loan_id:
+          type: string
+          readOnly: true
+        product_name:
+          type: string
+          readOnly: true
+        installment_number:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        due_date:
+          type: string
+          format: date
+        principal_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        interest_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        emi_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        remaining_balance:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        late_fee:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        status:
+          $ref: '#/components/schemas/EMIScheduleStatusEnum'
+        paid_date:
+          type: string
+          format: date
+          nullable: true
+        payment_reference:
+          type: string
+          nullable: true
+          maxLength: 100
+      required:
+      - due_date
+      - emi_amount
+      - id
+      - installment_number
+      - interest_amount
+      - loan
+      - loan_id
+      - principal_amount
+      - product_name
+      - remaining_balance
+    EMIScheduleStatusEnum:
+      enum:
+      - UPCOMING
+      - DUE
+      - PAID
+      - OVERDUE
+      type: string
+      description: |-
+        * `UPCOMING` - Upcoming
+        * `DUE` - Due
+        * `PAID` - Paid
+        * `OVERDUE` - Overdue
+    EligibilityStatusEnum:
+      enum:
+      - ELIGIBLE
+      - CONDITIONALLY_ELIGIBLE
+      - NOT_ELIGIBLE
+      type: string
+      description: |-
+        * `ELIGIBLE` - Eligible
+        * `CONDITIONALLY_ELIGIBLE` - Conditionally Eligible
+        * `NOT_ELIGIBLE` - Not Eligible
+    EmploymentTypeEnum:
+      enum:
+      - SALARIED
+      - SELF_EMPLOYED
+      - BUSINESS_OWNER
+      - OTHER
+      type: string
+      description: |-
+        * `SALARIED` - Salaried Employee
+        * `SELF_EMPLOYED` - Self-Employed Professional
+        * `BUSINESS_OWNER` - Business Owner / Entrepreneur
+        * `OTHER` - Other
+    KYCDocument:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        customer:
+          type: integer
+        customer_id:
+          type: string
+          readOnly: true
+        customer_name:
+          type: string
+          readOnly: true
+        document_type:
+          $ref: '#/components/schemas/DocumentTypeEnum'
+        document_number:
+          type: string
+          nullable: true
+          maxLength: 50
+        file:
+          type: string
+          format: uri
+        file_name:
+          type: string
+          nullable: true
+          maxLength: 255
+        file_size:
+          type: integer
+          readOnly: true
+        mime_type:
+          type: string
+          readOnly: true
+          nullable: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/KYCDocumentStatusEnum'
+          readOnly: true
+        verified_by:
+          type: integer
+          readOnly: true
+          nullable: true
+        verified_by_name:
+          type: string
+          readOnly: true
+        verified_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        remarks:
+          type: string
+          nullable: true
+        expiry_date:
+          type: string
+          format: date
+          nullable: true
+        uploaded_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - customer
+      - customer_id
+      - customer_name
+      - document_type
+      - file
+      - file_size
+      - id
+      - mime_type
+      - status
+      - uploaded_at
+      - verified_at
+      - verified_by
+      - verified_by_name
+    KYCDocumentStatusEnum:
+      enum:
+      - UPLOADED
+      - UNDER_REVIEW
+      - VERIFIED
+      - REJECTED
+      - EXPIRED
+      type: string
+      description: |-
+        * `UPLOADED` - Uploaded
+        * `UNDER_REVIEW` - Under Review
+        * `VERIFIED` - Verified
+        * `REJECTED` - Rejected
+        * `EXPIRED` - Expired
+    Loan:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        loan_id:
+          type: string
+          maxLength: 30
+        application:
+          type: integer
+        application_id:
+          type: string
+          readOnly: true
+        customer:
+          type: integer
+        customer_id:
+          type: string
+          readOnly: true
+        customer_name:
+          type: string
+          readOnly: true
+        product:
+          type: integer
+        product_name:
+          type: string
+          readOnly: true
+        sanctioned_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        interest_rate:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        tenure_months:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        monthly_emi:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        total_interest:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        total_payable:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        outstanding_principal:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        total_paid:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        disbursement_date:
+          type: string
+          format: date
+          nullable: true
+        first_emi_date:
+          type: string
+          format: date
+          nullable: true
+        maturity_date:
+          type: string
+          format: date
+          nullable: true
+        status:
+          $ref: '#/components/schemas/LoanStatusEnum'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - application
+      - application_id
+      - created_at
+      - customer
+      - customer_id
+      - customer_name
+      - id
+      - interest_rate
+      - loan_id
+      - monthly_emi
+      - outstanding_principal
+      - product
+      - product_name
+      - sanctioned_amount
+      - tenure_months
+      - total_interest
+      - total_payable
+      - updated_at
+    LoanApplication:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        application_id:
+          type: string
+          readOnly: true
+        customer:
+          type: integer
+        customer_details:
+          allOf:
+          - $ref: '#/components/schemas/CustomerProfile'
+          readOnly: true
+        product:
+          type: integer
+        product_details:
+          allOf:
+          - $ref: '#/components/schemas/LoanProduct'
+          readOnly: true
+        requested_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        tenure_months:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        purpose:
+          type: string
+          nullable: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/LoanApplicationStatusEnum'
+          readOnly: true
+        eligibility_status:
+          allOf:
+          - $ref: '#/components/schemas/EligibilityStatusEnum'
+          readOnly: true
+        eligibility_score:
+          type: integer
+          readOnly: true
+        eligibility_reason:
+          type: string
+          readOnly: true
+          nullable: true
+        dti_ratio:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+          readOnly: true
+        calculated_emi:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+        assigned_officer:
+          type: integer
+          readOnly: true
+          nullable: true
+        assigned_officer_name:
+          type: string
+          readOnly: true
+        approved_by:
+          type: integer
+          readOnly: true
+          nullable: true
+        approved_by_name:
+          type: string
+          readOnly: true
+        sanction_date:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+        rejection_reason:
+          type: string
+          readOnly: true
+          nullable: true
+        timeline:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanApplicationTimeline'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - application_id
+      - approved_by
+      - approved_by_name
+      - assigned_officer
+      - assigned_officer_name
+      - calculated_emi
+      - created_at
+      - customer
+      - customer_details
+      - dti_ratio
+      - eligibility_reason
+      - eligibility_score
+      - eligibility_status
+      - id
+      - product
+      - product_details
+      - rejection_reason
+      - requested_amount
+      - sanction_date
+      - status
+      - tenure_months
+      - timeline
+      - updated_at
+    LoanApplicationCreate:
+      type: object
+      properties:
+        product:
+          type: integer
+        requested_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        tenure_months:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        purpose:
+          type: string
+          nullable: true
+      required:
+      - product
+      - requested_amount
+      - tenure_months
+    LoanApplicationStatusEnum:
+      enum:
+      - SUBMITTED
+      - DOC_VERIFICATION
+      - UNDER_REVIEW
+      - RISK_ASSESSMENT
+      - MANAGER_APPROVAL
+      - APPROVED
+      - REJECTED
+      - DISBURSED
+      - CANCELLED
+      type: string
+      description: |-
+        * `SUBMITTED` - Application Submitted
+        * `DOC_VERIFICATION` - Document Verification
+        * `UNDER_REVIEW` - Under Review
+        * `RISK_ASSESSMENT` - Risk Assessment
+        * `MANAGER_APPROVAL` - Manager Approval
+        * `APPROVED` - Approved
+        * `REJECTED` - Rejected
+        * `DISBURSED` - Disbursed
+        * `CANCELLED` - Cancelled
+    LoanApplicationTimeline:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        stage:
+          type: string
+          maxLength: 50
+        status:
+          type: string
+          maxLength: 50
+        performed_by:
+          type: integer
+          nullable: true
+        performed_by_name:
+          type: string
+          readOnly: true
+        remarks:
+          type: string
+          nullable: true
+        timestamp:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - id
+      - performed_by_name
+      - stage
+      - status
+      - timestamp
+    LoanProduct:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        code:
+          type: string
+          maxLength: 20
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        min_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        max_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        interest_rate_min:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        interest_rate_max:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        min_tenure_months:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        max_tenure_months:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        processing_fee_percent:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        late_fee_percent:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        eligibility_min_income:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        eligibility_min_credit_score:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        max_dti_ratio:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        required_docs: {}
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - code
+      - created_at
+      - description
+      - id
+      - name
+    LoanStatusEnum:
+      enum:
+      - ACTIVE
+      - CLOSED
+      - DEFAULTED
+      - SETTLED
+      type: string
+      description: |-
+        * `ACTIVE` - Active
+        * `CLOSED` - Closed
+        * `DEFAULTED` - Defaulted
+        * `SETTLED` - Settled
+    Notification:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 200
+        message:
+          type: string
+        notification_type:
+          $ref: '#/components/schemas/NotificationTypeEnum'
+        is_read:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - message
+      - title
+    NotificationTypeEnum:
+      enum:
+      - LOAN_UPDATE
+      - KYC
+      - EMI_REMINDER
+      - PAYMENT
+      - SECURITY
+      - SYSTEM
+      type: string
+      description: |-
+        * `LOAN_UPDATE` - Loan Status Update
+        * `KYC` - KYC & Verification
+        * `EMI_REMINDER` - EMI Payment Reminder
+        * `PAYMENT` - Payment Confirmation
+        * `SECURITY` - Security Alert
+        * `SYSTEM` - System Announcement
+    OverdueAccount:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        loan:
+          type: integer
+        loan_id:
+          type: string
+          readOnly: true
+        product_name:
+          type: string
+          readOnly: true
+        customer_id:
+          type: string
+          readOnly: true
+        customer_name:
+          type: string
+          readOnly: true
+        customer_phone:
+          type: string
+          readOnly: true
+        overdue_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        overdue_emis_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        days_past_due:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        dpd_bracket:
+          $ref: '#/components/schemas/DpdBracketEnum'
+        assigned_officer:
+          type: integer
+          nullable: true
+        assigned_officer_name:
+          type: string
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/OverdueAccountStatusEnum'
+        last_contact_date:
+          type: string
+          format: date
+          nullable: true
+        next_followup_date:
+          type: string
+          format: date
+          nullable: true
+        activities:
+          type: array
+          items:
+            $ref: '#/components/schemas/CollectionActivity'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - activities
+      - assigned_officer_name
+      - created_at
+      - customer_id
+      - customer_name
+      - customer_phone
+      - id
+      - loan
+      - loan_id
+      - overdue_amount
+      - product_name
+      - updated_at
+    OverdueAccountStatusEnum:
+      enum:
+      - NEW
+      - CONTACTED
+      - PROMISE_TO_PAY
+      - RESTRUCTURED
+      - LEGAL_NOTICE
+      - RECOVERED
+      type: string
+      description: |-
+        * `NEW` - New Delinquency
+        * `CONTACTED` - Customer Contacted
+        * `PROMISE_TO_PAY` - Promise to Pay (PTP)
+        * `RESTRUCTURED` - Restructured
+        * `LEGAL_NOTICE` - Legal Notice Issued
+        * `RECOVERED` - Recovered & Current
+    PaginatedAdminUserManageList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminUserManage'
+    PaginatedApprovalMatrixConfigList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApprovalMatrixConfig'
+    PaginatedAuditLogList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditLog'
+    PaginatedCustomerProfileList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerProfile'
+    PaginatedEMIScheduleList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EMISchedule'
+    PaginatedKYCDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/KYCDocument'
+    PaginatedLoanApplicationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanApplication'
+    PaginatedLoanList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Loan'
+    PaginatedLoanProductList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanProduct'
+    PaginatedNotificationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+    PaginatedOverdueAccountList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OverdueAccount'
+    PaginatedPaymentTransactionList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentTransaction'
+    PaginatedRiskAssessmentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RiskAssessment'
+    PaginatedSupportTicketList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupportTicket'
+    PatchedAdminUserManage:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          title: Email address
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        phone:
+          type: string
+          nullable: true
+          maxLength: 20
+        branch:
+          type: string
+          maxLength: 100
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        is_verified:
+          type: boolean
+        password:
+          type: string
+          writeOnly: true
+    PatchedCustomerProfile:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        customer_id:
+          type: string
+          readOnly: true
+        user:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        full_name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          readOnly: true
+        phone:
+          type: string
+          readOnly: true
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          type: string
+          nullable: true
+          maxLength: 20
+        pan_number:
+          type: string
+          nullable: true
+          maxLength: 10
+        aadhaar_number:
+          type: string
+          nullable: true
+          maxLength: 12
+        marital_status:
+          type: string
+          nullable: true
+          maxLength: 20
+        address_line1:
+          type: string
+          nullable: true
+          maxLength: 255
+        address_line2:
+          type: string
+          nullable: true
+          maxLength: 255
+        city:
+          type: string
+          nullable: true
+          maxLength: 100
+        state:
+          type: string
+          nullable: true
+          maxLength: 100
+        pincode:
+          type: string
+          nullable: true
+          maxLength: 10
+        employment_type:
+          $ref: '#/components/schemas/EmploymentTypeEnum'
+        employer_name:
+          type: string
+          nullable: true
+          maxLength: 150
+        designation:
+          type: string
+          nullable: true
+          maxLength: 100
+        monthly_income:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        annual_income:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        work_experience_years:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        existing_loans_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        monthly_obligations:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        bank_name:
+          type: string
+          nullable: true
+          maxLength: 100
+        account_number:
+          type: string
+          nullable: true
+          maxLength: 30
+        ifsc_code:
+          type: string
+          nullable: true
+          maxLength: 20
+        credit_score:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          description: CIBIL / Credit Bureau Score (300 - 900)
+        onboarding_completed:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedLoanProduct:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        code:
+          type: string
+          maxLength: 20
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        min_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        max_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        interest_rate_min:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        interest_rate_max:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        min_tenure_months:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        max_tenure_months:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        processing_fee_percent:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        late_fee_percent:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        eligibility_min_income:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        eligibility_min_credit_score:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        max_dti_ratio:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        required_docs: {}
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedOverdueAccount:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        loan:
+          type: integer
+        loan_id:
+          type: string
+          readOnly: true
+        product_name:
+          type: string
+          readOnly: true
+        customer_id:
+          type: string
+          readOnly: true
+        customer_name:
+          type: string
+          readOnly: true
+        customer_phone:
+          type: string
+          readOnly: true
+        overdue_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        overdue_emis_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        days_past_due:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        dpd_bracket:
+          $ref: '#/components/schemas/DpdBracketEnum'
+        assigned_officer:
+          type: integer
+          nullable: true
+        assigned_officer_name:
+          type: string
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/OverdueAccountStatusEnum'
+        last_contact_date:
+          type: string
+          format: date
+          nullable: true
+        next_followup_date:
+          type: string
+          format: date
+          nullable: true
+        activities:
+          type: array
+          items:
+            $ref: '#/components/schemas/CollectionActivity'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedSupportTicket:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        ticket_id:
+          type: string
+          readOnly: true
+        user:
+          type: integer
+          readOnly: true
+        user_name:
+          type: string
+          readOnly: true
+        loan:
+          type: integer
+          nullable: true
+        subject:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        category:
+          $ref: '#/components/schemas/CategoryEnum'
+        priority:
+          $ref: '#/components/schemas/PriorityEnum'
+        status:
+          $ref: '#/components/schemas/SupportTicketStatusEnum'
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/TicketMessage'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          title: Email address
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        phone:
+          type: string
+          nullable: true
+          maxLength: 20
+        branch:
+          type: string
+          maxLength: 100
+        is_verified:
+          type: boolean
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PaymentMethodEnum:
+      enum:
+      - UPI
+      - NET_BANKING
+      - DEBIT_CARD
+      - NEFT_RTGS
+      type: string
+      description: |-
+        * `UPI` - UPI / QR
+        * `NET_BANKING` - Net Banking
+        * `DEBIT_CARD` - Debit Card
+        * `NEFT_RTGS` - NEFT / RTGS Transfer
+    PaymentTransaction:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        transaction_id:
+          type: string
+          maxLength: 50
+        loan:
+          type: integer
+        loan_id:
+          type: string
+          readOnly: true
+        emi:
+          type: integer
+          nullable: true
+        installment_number:
+          type: integer
+          readOnly: true
+          nullable: true
+        customer_name:
+          type: string
+          readOnly: true
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        payment_method:
+          $ref: '#/components/schemas/PaymentMethodEnum'
+        status:
+          $ref: '#/components/schemas/PaymentTransactionStatusEnum'
+        gateway_transaction_id:
+          type: string
+          nullable: true
+          maxLength: 100
+        receipt_number:
+          type: string
+          maxLength: 50
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - amount
+      - created_at
+      - customer_name
+      - id
+      - installment_number
+      - loan
+      - loan_id
+      - receipt_number
+      - transaction_id
+    PaymentTransactionStatusEnum:
+      enum:
+      - SUCCESS
+      - PENDING
+      - FAILED
+      - REFUNDED
+      type: string
+      description: |-
+        * `SUCCESS` - Success
+        * `PENDING` - Pending
+        * `FAILED` - Failed
+        * `REFUNDED` - Refunded
+    PriorityEnum:
+      enum:
+      - LOW
+      - MEDIUM
+      - HIGH
+      - URGENT
+      type: string
+      description: |-
+        * `LOW` - Low
+        * `MEDIUM` - Medium
+        * `HIGH` - High
+        * `URGENT` - Urgent
+    RecommendationEnum:
+      enum:
+      - APPROVE
+      - APPROVE_WITH_CONDITIONS
+      - REJECT
+      - MANUAL_REVIEW
+      type: string
+      description: |-
+        * `APPROVE` - Approve
+        * `APPROVE_WITH_CONDITIONS` - Approve with Conditions
+        * `REJECT` - Reject
+        * `MANUAL_REVIEW` - Manual Review Required
+    Register:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          title: Email address
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        password:
+          type: string
+          writeOnly: true
+        confirm_password:
+          type: string
+          writeOnly: true
+        phone:
+          type: string
+          nullable: true
+          maxLength: 20
+        full_name:
+          type: string
+          writeOnly: true
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+      required:
+      - confirm_password
+      - email
+      - password
+      - username
+    RiskAssessment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        application:
+          type: integer
+        application_id:
+          type: string
+          readOnly: true
+        customer_name:
+          type: string
+          readOnly: true
+        product_name:
+          type: string
+          readOnly: true
+        requested_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+        risk_score:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          description: Underwriting score (0 - 100)
+        risk_category:
+          $ref: '#/components/schemas/RiskCategoryEnum'
+        dti_ratio:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        credit_score:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        default_probability:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
+          description: ML predicted PD (e.g., 0.0320 = 3.2%)
+        model_name:
+          type: string
+          maxLength: 100
+        risk_indicators: {}
+        recommendation:
+          $ref: '#/components/schemas/RecommendationEnum'
+        assessed_by:
+          type: integer
+          nullable: true
+        assessed_by_name:
+          type: string
+          readOnly: true
+        analyst_notes:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - application
+      - application_id
+      - assessed_by_name
+      - created_at
+      - credit_score
+      - customer_name
+      - default_probability
+      - dti_ratio
+      - id
+      - product_name
+      - recommendation
+      - requested_amount
+      - risk_category
+      - risk_score
+      - updated_at
+    RiskCategoryEnum:
+      enum:
+      - LOW
+      - MEDIUM
+      - HIGH
+      type: string
+      description: |-
+        * `LOW` - Low Risk
+        * `MEDIUM` - Medium Risk
+        * `HIGH` - High Risk
+    RoleEnum:
+      enum:
+      - CUSTOMER
+      - LOAN_OFFICER
+      - RISK_ANALYST
+      - MANAGER
+      - COLLECTION_OFFICER
+      - ADMIN
+      type: string
+      description: |-
+        * `CUSTOMER` - Customer
+        * `LOAN_OFFICER` - Loan Officer
+        * `RISK_ANALYST` - Risk Analyst
+        * `MANAGER` - Credit Manager
+        * `COLLECTION_OFFICER` - Collection Officer
+        * `ADMIN` - System Administrator
+    SupportTicket:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        ticket_id:
+          type: string
+          readOnly: true
+        user:
+          type: integer
+          readOnly: true
+        user_name:
+          type: string
+          readOnly: true
+        loan:
+          type: integer
+          nullable: true
+        subject:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        category:
+          $ref: '#/components/schemas/CategoryEnum'
+        priority:
+          $ref: '#/components/schemas/PriorityEnum'
+        status:
+          $ref: '#/components/schemas/SupportTicketStatusEnum'
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/TicketMessage'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - description
+      - id
+      - messages
+      - subject
+      - ticket_id
+      - updated_at
+      - user
+      - user_name
+    SupportTicketStatusEnum:
+      enum:
+      - OPEN
+      - IN_PROGRESS
+      - RESOLVED
+      - CLOSED
+      type: string
+      description: |-
+        * `OPEN` - Open
+        * `IN_PROGRESS` - In Progress
+        * `RESOLVED` - Resolved
+        * `CLOSED` - Closed
+    TicketMessage:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        ticket:
+          type: integer
+        sender:
+          type: integer
+          readOnly: true
+        sender_name:
+          type: string
+          readOnly: true
+        message:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - message
+      - sender
+      - sender_name
+      - ticket
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+      required:
+      - access
+      - refresh
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          title: Email address
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        phone:
+          type: string
+          nullable: true
+          maxLength: 20
+        branch:
+          type: string
+          maxLength: 100
+        is_verified:
+          type: boolean
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - updated_at
+      - username
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
